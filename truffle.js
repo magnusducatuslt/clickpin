@@ -13,7 +13,7 @@ const remove0x = el => (typeof el !== 'undefined' && el.length > 2 && el.substr(
 process.env.PRIVKEY = (process.env.DC_NETWORK === 'ropsten') &&
  remove0x(process.env.PRIVKEY) || remove0x(require('./secrets.json').ropsten.privkey)
 
-
+//
 module.exports = {
   networks: {
     development: {
