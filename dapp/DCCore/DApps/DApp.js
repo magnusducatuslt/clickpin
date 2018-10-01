@@ -89,6 +89,7 @@ export default class DApp {
    * @ignore
    */
   constructor (params) {
+    console.log(params)
     if (!params.slug) {
       throw new Error('slug option is required')
     }
@@ -507,7 +508,7 @@ export default class DApp {
       // Up session
       this.session = this.session || 0
       this.session++
-
+      console.log(function_args)
       // Find rnd object
       // let rnd_i    = null
       let gamedata = []

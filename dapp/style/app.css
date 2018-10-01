@@ -1,0 +1,209 @@
+:root {
+  --blue: #3200f5;
+  --cyan: #0afffa;
+  --lightBlue: #14baf7;
+  --pink: #fa00a0;
+  --darkBlue: #000037;
+  --darkBlueRGB: 0, 0, 55;
+  --navyBlue: #1c1b4c;
+  --navyBlueRGB: 28, 27, 76;
+  --white: #fff;
+  --text: #d2d2d2;
+  --font-family-title: "Montserrat", "Helvetica", "Arial", sans-serif;
+  --font-family-text: "Roboto", "Helvetica", "Arial", sans-serif;
+}
+#root {
+  margin: 0px 114px;
+}
+html {
+  background: #000037;
+  color: white;
+  font-family: var(--font-family-text);
+}
+.button_money {
+  position: relative;
+  display: block;
+  width: 100%;
+  max-width: 380px;
+  padding: 13px 24px;
+  font-family: var(--font-family-title);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--white);
+  text-transform: uppercase;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 6px;
+  background-image: -webkit-linear-gradient(
+    315deg,
+    var(--blue),
+    var(--pink),
+    var(--blue),
+    var(--cyan),
+    var(--blue),
+    var(--pink)
+  );
+  background-image: -o-linear-gradient(
+    315deg,
+    var(--blue),
+    var(--pink),
+    var(--blue),
+    var(--cyan),
+    var(--blue),
+    var(--pink)
+  );
+  background-image: linear-gradient(
+    135deg,
+    var(--blue),
+    var(--pink),
+    var(--blue),
+    var(--cyan),
+    var(--blue),
+    var(--pink)
+  );
+  background-size: 500% 500%;
+  background-position: 0% 0%;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.button_money::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background-image: -webkit-linear-gradient(
+    315deg,
+    var(--blue),
+    var(--pink),
+    var(--blue),
+    var(--cyan),
+    var(--blue),
+    var(--pink)
+  );
+  background-image: -o-linear-gradient(
+    315deg,
+    var(--blue),
+    var(--pink),
+    var(--blue),
+    var(--cyan),
+    var(--blue),
+    var(--pink)
+  );
+  background-image: linear-gradient(
+    135deg,
+    var(--blue),
+    var(--pink),
+    var(--blue),
+    var(--cyan),
+    var(--blue),
+    var(--pink)
+  );
+  background-size: 500% 500%;
+  background-position: 0% 0%;
+  -webkit-filter: blur(10px);
+  filter: blur(10px);
+  opacity: 0;
+  z-index: -1;
+  -webkit-transition: opacity 0.2s;
+  -o-transition: opacity 0.2s;
+  transition: opacity 0.2s;
+}
+
+.button_money:hover {
+  -webkit-animation: animateGradient 4s ease-in-out infinite alternate;
+  animation: animateGradient 4s ease-in-out infinite alternate;
+}
+
+.button_money:hover::before {
+  opacity: 1;
+  -webkit-animation: animateGradient 4s ease-in-out infinite alternate;
+  animation: animateGradient 4s ease-in-out infinite alternate;
+}
+
+.button_money:focus {
+  outline: none;
+}
+
+.button_money:focus::before {
+  opacity: 1;
+}
+
+@media (min-width: 1024px) {
+  .button_money {
+    min-width: 280px;
+    width: auto;
+  }
+}
+
+@-webkit-keyframes animateGradient {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
+}
+
+@keyframes animateGradient {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
+}
+.bomb__body {
+  background: grey;
+  box-shadow: 0 2px 100px 50px rgba(50, 0, 245, 0.2);
+}
+.bomb__body__buttons {
+  display: flex;
+  justify-content: space-around;
+}
+.inputNums {
+  width: 30px !important;
+  height: 30px !important;
+  border-radius: 5px !important;
+}
+.bomb__jacket {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+}
+.bomb__body {
+  border: 2px double black;
+}
+.bomb__body__buttons {
+  border: 2px double black;
+}
+.bomb__body__display {
+  border: 4px outset black;
+  display: flex;
+  flex-flow: row;
+  background: white;
+  color: red;
+  justify-content: space-around;
+}
+.display__number {
+  width: 33%;
+  border: black;
+  text-align: center;
+}
+.inputSetRoll {
+  width: 400px;
+  height: 30px;
+  text-align: center;
+  border-radius: 20px;
+  font-size: 20px;
+}
+
+.confirm__pane {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+}

@@ -9,8 +9,9 @@ import DCLib from './DCCore/index.js'
 import dappLogicInit from './dapp.logic.js'
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
+import './style/app.css'
 
-import Table from './components/Table.js'
+import Bomb from './components/Bomb.js'
 
 class App extends Component {
   constructor () {
@@ -19,19 +20,23 @@ class App extends Component {
       game: {
         status: '',
         result: '',
+        time: '',
         methodes: {},
         clickedPlace: {
-          x: '',
-          y: '',
-          clicked: false,
-          isOpen: false
+          clicked: false
         }
+      },
+      bomb: {
+        oneDisplay: 0,
+        twoDisplay: 0,
+        threeDisplay: 0
       },
       participants: {
         player: {
           account: '',
           bet: '',
-          eth: ''
+          eth: '',
+          isRoll: false
         },
         bankroller: {
           isFound: false,
@@ -51,7 +56,7 @@ class App extends Component {
     const { participants } = this.state
 
     DCLib.on('ready', function () {
-      dappLogicInit(DCLib, 'dice_ex_v1')
+      dappLogicInit(DCLib, 'DCGame_FTE_v1')
       DCLib.Account.initAccount(function () {
         participants.player.account = DCLib.Account
         // $('#user_address').html(
@@ -66,12 +71,319 @@ class App extends Component {
         //   'https://platform.dao.casino/faucet?to=' + DCLib.Account.get().openkey
         // )
         window.Dice = new DCLib.DApp({
-          slug: 'dice_ex_v1',
+          slug: 'DCGame_FTE_v1',
           contract: {
-            address: '0x674f8b960d103ccbabc0b0201da0cd52b9f5d352',
-            abi: JSON.parse(
-              '[{"constant":true,"inputs":[{"name":"","type":"bytes32"}],"name":"disputes","outputs":[{"name":"disputeSeed","type":"bytes32"},{"name":"disputeBet","type":"uint256"},{"name":"initiator","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_id","type":"bytes32"},{"name":"_session","type":"uint256"},{"name":"_disputeBet","type":"uint256"},{"name":"_gameData","type":"uint256[]"},{"name":"_disputeSeed","type":"bytes32"},{"name":"_sign","type":"bytes"}],"name":"openDispute","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_gameData","type":"uint256[]"},{"name":"_bet","type":"uint256"}],"name":"getProfit","outputs":[{"name":"_profit","type":"uint256"}],"payable":false,"stateMutability":"pure","type":"function"},{"constant":true,"inputs":[],"name":"playerWL","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_id","type":"bytes32"},{"name":"_N","type":"bytes"},{"name":"_E","type":"bytes"},{"name":"_rsaSign","type":"bytes"}],"name":"resolveDispute","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_id","type":"bytes32"},{"name":"_playerBalance","type":"uint256"},{"name":"_bankrollerBalance","type":"uint256"},{"name":"_totalBet","type":"uint256"},{"name":"_session","type":"uint256"},{"name":"_sign","type":"bytes"}],"name":"updateChannel","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"config","outputs":[{"name":"maxBet","type":"uint256"},{"name":"minBet","type":"uint256"},{"name":"gameDevReward","type":"uint8"},{"name":"bankrollReward","type":"uint8"},{"name":"platformReward","type":"uint8"},{"name":"refererReward","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"bytes32"}],"name":"channels","outputs":[{"name":"state","type":"uint8"},{"name":"player","type":"address"},{"name":"bankroller","type":"address"},{"name":"playerBalance","type":"uint256"},{"name":"bankrollerBalance","type":"uint256"},{"name":"totalBet","type":"uint256"},{"name":"session","type":"uint256"},{"name":"endBlock","type":"uint256"},{"name":"RSAHash","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"rsa","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_hash","type":"bytes32"},{"name":"signature","type":"bytes"}],"name":"recoverSigner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"pure","type":"function"},{"constant":true,"inputs":[{"name":"_sigseed","type":"bytes"},{"name":"_min","type":"uint256"},{"name":"_max","type":"uint256"}],"name":"generateRnd","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"pure","type":"function"},{"constant":false,"inputs":[{"name":"_id","type":"bytes32"},{"name":"_playerBalance","type":"uint256"},{"name":"_bankrollerBalance","type":"uint256"},{"name":"_totalBet","type":"uint256"},{"name":"_session","type":"uint256"},{"name":"_close","type":"bool"},{"name":"_sign","type":"bytes"}],"name":"closeByConsent","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_gameData","type":"uint256[]"},{"name":"_bet","type":"uint256"},{"name":"_sigseed","type":"bytes"}],"name":"game","outputs":[{"name":"_win","type":"bool"},{"name":"_amount","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"developer","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"safeTime","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"refContract","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_id","type":"bytes32"},{"name":"_player","type":"address"},{"name":"_bankroller","type":"address"},{"name":"_playerBalance","type":"uint256"},{"name":"_bankrollerBalance","type":"uint256"},{"name":"_openingBlock","type":"uint256"},{"name":"_gameData","type":"uint256[]"},{"name":"_N","type":"bytes"},{"name":"_E","type":"bytes"},{"name":"_sign","type":"bytes"}],"name":"openChannel","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"gameWL","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_id","type":"bytes32"}],"name":"closeByTime","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_gameData","type":"uint256[]"},{"name":"_bet","type":"uint256"}],"name":"checkGameData","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"token","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[{"name":"_token","type":"address"},{"name":"_ref","type":"address"},{"name":"_gameWL","type":"address"},{"name":"_playerWL","type":"address"},{"name":"_rsa","type":"address"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"action","type":"string"},{"indexed":false,"name":"id","type":"bytes32"},{"indexed":false,"name":"playerBalance","type":"uint256"},{"indexed":false,"name":"bankrollerBalance","type":"uint256"},{"indexed":false,"name":"session","type":"uint256"}],"name":"logChannel","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"action","type":"string"},{"indexed":false,"name":"initiator","type":"address"},{"indexed":false,"name":"id","type":"bytes32"},{"indexed":false,"name":"session","type":"uint256"},{"indexed":false,"name":"seed","type":"bytes32"}],"name":"logDispute","type":"event"}]'
-            )
+            address: '0xaB444c38096FfC7793D2f4a19d3BB8BAfD6853EE',
+            abi: [
+              {
+                constant: true,
+                inputs: [{ name: '', type: 'bytes32' }],
+                name: 'disputes',
+                outputs: [
+                  { name: 'disputeSeed', type: 'bytes32' },
+                  { name: 'disputeBet', type: 'uint256' },
+                  { name: 'initiator', type: 'address' }
+                ],
+                payable: false,
+                stateMutability: 'view',
+                type: 'function'
+              },
+              {
+                constant: false,
+                inputs: [
+                  { name: '_id', type: 'bytes32' },
+                  { name: '_session', type: 'uint256' },
+                  { name: '_disputeBet', type: 'uint256' },
+                  { name: '_gameData', type: 'uint256[]' },
+                  { name: '_disputeSeed', type: 'bytes32' },
+                  { name: '_sign', type: 'bytes' }
+                ],
+                name: 'openDispute',
+                outputs: [],
+                payable: false,
+                stateMutability: 'nonpayable',
+                type: 'function'
+              },
+              {
+                constant: true,
+                inputs: [],
+                name: 'playerWL',
+                outputs: [{ name: '', type: 'address' }],
+                payable: false,
+                stateMutability: 'view',
+                type: 'function'
+              },
+              {
+                constant: false,
+                inputs: [
+                  { name: '_id', type: 'bytes32' },
+                  { name: '_N', type: 'bytes' },
+                  { name: '_E', type: 'bytes' },
+                  { name: '_rsaSign', type: 'bytes' }
+                ],
+                name: 'resolveDispute',
+                outputs: [],
+                payable: false,
+                stateMutability: 'nonpayable',
+                type: 'function'
+              },
+              {
+                constant: false,
+                inputs: [
+                  { name: '_id', type: 'bytes32' },
+                  { name: '_playerBalance', type: 'uint256' },
+                  { name: '_bankrollerBalance', type: 'uint256' },
+                  { name: '_totalBet', type: 'uint256' },
+                  { name: '_session', type: 'uint256' },
+                  { name: '_sign', type: 'bytes' }
+                ],
+                name: 'updateChannel',
+                outputs: [],
+                payable: false,
+                stateMutability: 'nonpayable',
+                type: 'function'
+              },
+              {
+                constant: true,
+                inputs: [],
+                name: 'config',
+                outputs: [
+                  { name: 'maxBet', type: 'uint256' },
+                  { name: 'minBet', type: 'uint256' },
+                  { name: 'gameDevReward', type: 'uint8' },
+                  { name: 'bankrollReward', type: 'uint8' },
+                  { name: 'platformReward', type: 'uint8' },
+                  { name: 'refererReward', type: 'uint8' }
+                ],
+                payable: false,
+                stateMutability: 'view',
+                type: 'function'
+              },
+              {
+                constant: true,
+                inputs: [{ name: '', type: 'bytes32' }],
+                name: 'channels',
+                outputs: [
+                  { name: 'state', type: 'uint8' },
+                  { name: 'player', type: 'address' },
+                  { name: 'bankroller', type: 'address' },
+                  { name: 'playerBalance', type: 'uint256' },
+                  { name: 'bankrollerBalance', type: 'uint256' },
+                  { name: 'totalBet', type: 'uint256' },
+                  { name: 'session', type: 'uint256' },
+                  { name: 'endBlock', type: 'uint256' },
+                  { name: 'RSAHash', type: 'bytes32' }
+                ],
+                payable: false,
+                stateMutability: 'view',
+                type: 'function'
+              },
+              {
+                constant: true,
+                inputs: [],
+                name: 'rsa',
+                outputs: [{ name: '', type: 'address' }],
+                payable: false,
+                stateMutability: 'view',
+                type: 'function'
+              },
+              {
+                constant: true,
+                inputs: [
+                  { name: '_hash', type: 'bytes32' },
+                  { name: 'signature', type: 'bytes' }
+                ],
+                name: 'recoverSigner',
+                outputs: [{ name: '', type: 'address' }],
+                payable: false,
+                stateMutability: 'pure',
+                type: 'function'
+              },
+              {
+                constant: false,
+                inputs: [
+                  { name: '_id', type: 'bytes32' },
+                  { name: '_playerBalance', type: 'uint256' },
+                  { name: '_bankrollerBalance', type: 'uint256' },
+                  { name: '_totalBet', type: 'uint256' },
+                  { name: '_session', type: 'uint256' },
+                  { name: '_close', type: 'bool' },
+                  { name: '_sign', type: 'bytes' }
+                ],
+                name: 'closeByConsent',
+                outputs: [],
+                payable: false,
+                stateMutability: 'nonpayable',
+                type: 'function'
+              },
+              {
+                constant: true,
+                inputs: [],
+                name: 'developer',
+                outputs: [{ name: '', type: 'address' }],
+                payable: false,
+                stateMutability: 'view',
+                type: 'function'
+              },
+              {
+                constant: true,
+                inputs: [],
+                name: 'safeTime',
+                outputs: [{ name: '', type: 'uint256' }],
+                payable: false,
+                stateMutability: 'view',
+                type: 'function'
+              },
+              {
+                constant: true,
+                inputs: [],
+                name: 'refContract',
+                outputs: [{ name: '', type: 'address' }],
+                payable: false,
+                stateMutability: 'view',
+                type: 'function'
+              },
+              {
+                constant: false,
+                inputs: [
+                  { name: '_id', type: 'bytes32' },
+                  { name: '_player', type: 'address' },
+                  { name: '_bankroller', type: 'address' },
+                  { name: '_playerBalance', type: 'uint256' },
+                  { name: '_bankrollerBalance', type: 'uint256' },
+                  { name: '_openingBlock', type: 'uint256' },
+                  { name: '_gameData', type: 'uint256[]' },
+                  { name: '_N', type: 'bytes' },
+                  { name: '_E', type: 'bytes' },
+                  { name: '_sign', type: 'bytes' }
+                ],
+                name: 'openChannel',
+                outputs: [],
+                payable: false,
+                stateMutability: 'nonpayable',
+                type: 'function'
+              },
+              {
+                constant: true,
+                inputs: [],
+                name: 'gameWL',
+                outputs: [{ name: '', type: 'address' }],
+                payable: false,
+                stateMutability: 'view',
+                type: 'function'
+              },
+              {
+                constant: false,
+                inputs: [{ name: '_id', type: 'bytes32' }],
+                name: 'closeByTime',
+                outputs: [],
+                payable: false,
+                stateMutability: 'nonpayable',
+                type: 'function'
+              },
+              {
+                constant: true,
+                inputs: [],
+                name: 'token',
+                outputs: [{ name: '', type: 'address' }],
+                payable: false,
+                stateMutability: 'view',
+                type: 'function'
+              },
+              {
+                inputs: [
+                  { name: '_token', type: 'address' },
+                  { name: '_ref', type: 'address' },
+                  { name: '_gameWL', type: 'address' },
+                  { name: '_playerWL', type: 'address' },
+                  { name: '_rsa', type: 'address' }
+                ],
+                payable: false,
+                stateMutability: 'nonpayable',
+                type: 'constructor'
+              },
+              {
+                anonymous: false,
+                inputs: [
+                  { indexed: false, name: 'action', type: 'string' },
+                  { indexed: false, name: 'id', type: 'bytes32' },
+                  { indexed: false, name: 'playerBalance', type: 'uint256' },
+                  {
+                    indexed: false,
+                    name: 'bankrollerBalance',
+                    type: 'uint256'
+                  },
+                  { indexed: false, name: 'session', type: 'uint256' }
+                ],
+                name: 'logChannel',
+                type: 'event'
+              },
+              {
+                anonymous: false,
+                inputs: [
+                  { indexed: false, name: 'action', type: 'string' },
+                  { indexed: false, name: 'initiator', type: 'address' },
+                  { indexed: false, name: 'id', type: 'bytes32' },
+                  { indexed: false, name: 'session', type: 'uint256' },
+                  { indexed: false, name: 'seed', type: 'bytes32' }
+                ],
+                name: 'logDispute',
+                type: 'event'
+              },
+              {
+                constant: true,
+                inputs: [
+                  { name: '_gameData', type: 'uint256[]' },
+                  { name: '_bet', type: 'uint256' }
+                ],
+                name: 'checkGameData',
+                outputs: [{ name: '', type: 'bool' }],
+                payable: false,
+                stateMutability: 'view',
+                type: 'function'
+              },
+              {
+                constant: true,
+                inputs: [
+                  { name: '_gameData', type: 'uint256[]' },
+                  { name: '_bet', type: 'uint256' },
+                  { name: '_sigseed', type: 'bytes' }
+                ],
+                name: 'game',
+                outputs: [
+                  { name: '_win', type: 'bool' },
+                  { name: '_amount', type: 'uint256' }
+                ],
+                payable: false,
+                stateMutability: 'view',
+                type: 'function'
+              },
+              {
+                constant: true,
+                inputs: [
+                  { name: '_gameData', type: 'uint256[]' },
+                  { name: '_bet', type: 'uint256' }
+                ],
+                name: 'getProfit',
+                outputs: [{ name: '_profit', type: 'uint256' }],
+                payable: false,
+                stateMutability: 'pure',
+                type: 'function'
+              },
+              {
+                constant: true,
+                inputs: [
+                  { name: '_sigseed', type: 'bytes' },
+                  { name: '_min', type: 'uint256' },
+                  { name: '_max', type: 'uint256' }
+                ],
+                name: 'generateRnd',
+                outputs: [{ name: '', type: 'uint256' }],
+                payable: false,
+                stateMutability: 'pure',
+                type: 'function'
+              }
+            ]
           },
           rules: {
             depositX: 2
@@ -110,6 +422,8 @@ class App extends Component {
     updateBalanceState()
   }
   startGame = deposit => {
+    const that = this
+    const { participants } = this.state
     window.Dice.connect(
       {
         bankroller: 'auto',
@@ -119,9 +433,12 @@ class App extends Component {
       function (connected, info) {
         console.log('connect result:', connected)
         console.log('connect info:', info)
+        participants.bankroller.isFound = true
+        console.log(participants)
+        that.setState({ participants })
         if (!connected) return
 
-        let maxbet = DCLib.Utils.dec2bet(info.channel.player_deposit)
+        // let maxbet = DCLib.Utils.dec2bet(info.channel.player_deposit)
 
         // $('#user_bet')[0].max = Math.ceil(maxbet)
         // $('#user_bet').val((maxbet * 0.1).toFixed(2))
@@ -130,19 +447,31 @@ class App extends Component {
       }
     )
   }
-  makeRoll = (user_bet, ...args) => {
-    console.log(...{ name: 1, hui: 2 })
-    const random_hash = DCLib.randomHash({
-      bet: user_bet,
-      gamedata: [...args]
-    })
-    console.log(random_hash)
-    // window.Dice.Game(user_bet, user_num, random_hash).then(function (result) {
-    //   console.log('result', result)
-    //   this.renderGames()
-    //   var ubets = window.Dice.Game.payChannel.getBalance()
-    //   // $('#user_bet').max = ubets
-    // })
+  makeRoll = (user_bet, clicked, args) => {
+    console.log(user_bet)
+    const that = this
+    const { participants } = this.state
+    if (user_bet !== 0) {
+      let random_hashOne
+      random_hashOne = DCLib.randomHash({
+        bet: user_bet,
+        gamedata: [args[0], args[1], args[2], clicked]
+      })
+      window.Dice.Game(
+        user_bet,
+        [args[0], args[1], args[2], clicked],
+        random_hashOne
+      ).then(function (result) {
+        console.log('result', result)
+        participants.player.isRoll = false
+        that.setState({ participants })
+        // this.renderGames()
+        // var ubets = window.Dice.Game.payChannel.getBalance()
+        // $('#user_bet').max = ubets
+      })
+    } else {
+      return
+    }
   }
   endGame = () => {
     window.Dice.disconnect(function (res) {
@@ -161,10 +490,10 @@ class App extends Component {
     console.log('deposite value', depositeValue)
     this.startGame(depositeValue)
   }
-  handleSubmitBet = () => {
-    console.log('bet', this.state.inputValue.betValue)
-    const { betValue, numValue } = this.state.inputValue
-    this.makeRoll(betValue, numValue)
+  handleSubmitBet = e => {
+    const { participants } = this.state
+    participants.player.isRoll = true
+    this.setState({ participants })
   }
   handleChangeInputDeposite = e => {
     console.log(e.target.value)
@@ -182,54 +511,68 @@ class App extends Component {
     inputValue.numValue = e.target.value
     this.setState({ inputValue })
   }
-  setClickedPoints = ({ x, y, clicked }) => {
-    const { game } = this.state
+  // for setClicked
+  // setClickedPoints = ({ x, y, clicked }) => {
+  //   const { game } = this.state
 
-    game.clickedPlace.x = x
-    game.clickedPlace.y = y
-    game.clickedPlace.clicked = clicked
-    game.clickedPlace.isOpen = true
-    // this.makeRoll(1, 1)
-    // this.makeRoll(1, 1)
-    this.makeRoll(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
-    this.setState({ game: game })
-  }
+  //   game.clickedPlace.x = x
+  //   game.clickedPlace.y = y
+  //   game.clickedPlace.clicked = clicked
+  //   game.clickedPlace.isOpen = true
+  //   this.makeRoll(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+  //   this.setState({ game: game })
+  // }
+
   render () {
     const that = this
-    const { participants, inputValue } = this.state
+    const { participants, inputValue, bomb } = this.state
     return (
       <div>
-        <Status status={'status'} />
-        <Account account={participants.player} />
-        <Button
-          onSubmit={that.handleSubmitDeposite}
-          context={that}
-          name={'Set'}
-        />
-        <Input
-          onChange={that.handleChangeInputDeposite}
-          context={that}
-          name={'Deposite'}
-          value={inputValue.depositeValue}
-        />
-        <Button onSubmit={that.handleSubmitBet} context={that} name={'Roll'} />
-        <Input
-          onChange={that.handleChangeInputBet}
-          context={that}
-          name={'Bet'}
-          value={inputValue.bet}
-        />
-        <Input
-          onChange={that.handleChangeInputNumberByPlayer}
-          context={that}
-          name={'number'}
-          value={inputValue.numValue}
-        />
-
+        <div>
+          <Status status={'Status'} />
+          <Account account={participants.player} />
+        </div>
+        <br />
+        <br />
+        <br />
+        {!participants.bankroller.isFound ? (
+          <div className="confirm__pane">
+            <Input
+              onChange={that.handleChangeInputDeposite}
+              context={that}
+              name={'Deposite'}
+              value={inputValue.depositeValue}
+            />
+            <br />
+            <Button
+              onSubmit={that.handleSubmitDeposite}
+              context={that}
+              name={'Set'}
+            />
+          </div>
+        ) : (
+          <div className="confirm__pane">
+            <Input
+              onChange={that.handleChangeInputBet}
+              context={that}
+              name={'Bet'}
+              value={inputValue.bet}
+            />
+            <br />
+            <Button
+              onSubmit={that.handleSubmitBet}
+              context={that}
+              name={'Roll'}
+            />
+          </div>
+        )}
+        <br />
         {
-          <Table
+          <Bomb
             isFound={participants.bankroller.isFound}
-            setClickedPoints={this.setClickedPoints}
+            makeRoll={this.makeRoll}
+            isRoll={participants.player.isRoll}
+            howMuch={inputValue.betValue}
           />
         }
       </div>
@@ -249,10 +592,17 @@ const Account = ({ account, context }) => {
   }
   return (
     <div>
-      <div className="address">Your address: {componentData.address}</div>
+      <div className="address">
+        Your address:{' '}
+        <strong style={{ color: '#fa00a0' }}>{componentData.address}</strong>
+      </div>
       <div className="balance">
-        <div className="balance__bet">bet: {componentData.bet}</div>
-        <div className="balance_eth">eth: {componentData.eth}</div>
+        <div className="balance__bet">
+          bet: <strong style={{ color: '#fa00a0' }}>{componentData.bet}</strong>
+        </div>
+        <div className="balance_eth">
+          eth: <strong style={{ color: '#fa00a0' }}>{componentData.eth}</strong>
+        </div>
       </div>
     </div>
   )
@@ -261,9 +611,11 @@ const Button = ({ name, context, onSubmit }) => {
   return (
     <div>
       <button
+        className="button_money"
         onClick={onSubmit}
         ref={node => (context[`nodeButton${name}`] = node)}
         type="button"
+        style={{ width: '50%' }}
       >
         {name}
       </button>
@@ -274,6 +626,7 @@ const Input = ({ onChange, name, context, value }) => {
   return (
     <div>
       <input
+        className="inputSetRoll"
         ref={node => (context[`nodeInput${name}`] = node)}
         type="number"
         placeholder={name}
@@ -284,7 +637,11 @@ const Input = ({ onChange, name, context, value }) => {
   )
 }
 const Status = ({ status }) => {
-  return <div>{status}</div>
+  return (
+    <div>
+      <h1>{status}</h1>
+    </div>
+  )
 }
 
 ReactDOM.render(<App />, document.getElementById('root'))

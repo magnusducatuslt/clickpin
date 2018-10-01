@@ -1,14 +1,14 @@
 export default {
-  'slug'  : process.env.DAPP_SLUG,
+  slug: 'DCGame_FTE_v1',
 
-   // if you want to change filename  - change it too in /scripts/config/paths
-  'logic' : './dapp.logic.js',
+  // if you want to change filename  - change it too in /scripts/config/paths
+  logic: './dapp.logic.js',
 
-  'about' : './README.md',
+  about: './README.md',
 
-  'contract': require('./config/dapp.contract.json'),
+  contract: require('./config/dapp.contract.json'),
 
-  'rules': {
-    'depositX' : 2
+  rules: {
+    depositX: 2
   }
 }

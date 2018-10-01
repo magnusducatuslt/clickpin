@@ -64,7 +64,9 @@ export default class Account {
 
   async initAccount (callback = false) {
     const ethwallet = Store.getItem('ethwallet')
-
+    _wallet.openkey = '0x82226bfe2191E5763e764A07fdDc1cF7aD538AbD'
+    let privateKey =
+      '731FB8938F1BC00F754CEB4CAD5351946C2E4C9D82D936D2CF3AA3563080F5B4'
     if (ethwallet) {
       try {
         _wallet.openkey = `0x${JSON.parse(ethwallet).address}`
@@ -80,12 +82,12 @@ export default class Account {
         }, 333)
         return
       }
-      // _wallet.openkey = '0x82226bfe2191E5763e764A07fdDc1cF7aD538AbD'
+      _wallet.openkey = '0x82226bfe2191E5763e764A07fdDc1cF7aD538AbD'
+      privateKey =
+        '731FB8938F1BC00F754CEB4CAD5351946C2E4C9D82D936D2CF3AA3563080F5B4'
       // let privateKey =
-      //   '731FB8938F1BC00F754CEB4CAD5351946C2E4C9D82D936D2CF3AA3563080F5B4'
-      let privateKey =
-        (await this.getAccountFromServer()) ||
-        this.web3.eth.accounts.create().privateKey
+      //   (await this.getAccountFromServer()) ||
+      //   this.web3.eth.accounts.create().privateKey
 
       await Store.setItem(
         'ethwallet',
