@@ -1,0 +1,24 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Program",
+      "program": "${workspaceFolder}/packages/bankroller-core/lib/index",
+      "cwd": "${workspaceFolder}/packages/bankroller-core/",
+      "env": {
+        "DC_NETWORK": "ropsten",
+        "DATA_PATH": "data_ropsten",
+        "DATA_SUBPATH": "r",
+        "DAPPS_PATH": "data/dapps",
+        "ACCOUNT_PRIVATE_KEY": "0xa3aac5e1f8e5469fc4ddb74cf3bed94f37dc5ee6688a26287bbd854a5f638963",
+        "PAY_CHANNEL_CONTRACT_ADDRESS": "0x5D1E47F703729fc87FdB9bA5C20fE4c1b7c7bf57"
+      },
+      "outFiles": ["${workspaceFolder}/packages/bankroller-core/lib/**/*.js"]
+    }
+  ]
+}
